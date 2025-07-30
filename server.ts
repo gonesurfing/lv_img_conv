@@ -18,6 +18,7 @@ interface Query {
   dither?: 'true';
   bigEndian?: 'true';
   url?: string;
+  maxSize?: string;  // e.g. '800x480'
 }
 
 app.post(
@@ -60,24 +61,31 @@ app.post(
         }
       }
 
-      // Prepare input: for RAW modes use Uint8Array, otherwise decode buffer to a Canvas Image
+      // Prepare input: for RAW modes use Uint8Array, otherwise decode and optionally resize image
       let inputData: any;
       if (cf === ImageMode.CF_RAW || cf === ImageMode.CF_RAW_ALPHA) {
         inputData = new Uint8Array(fileBuf);
       } else {
+        // load original image (resize will be handled by convertImageBlob options)
         inputData = await loadImage(fileBuf);
       }
-      const result = await convertImageBlob(
-        inputData,
-        {
-          cf,
-          outputFormat: outputMode,
-          binaryFormat,
-          swapEndian: bigEndian,
-          dith: dither,
-          outName: 'converted',
+      // prepare conversion options, include resize hints if provided
+      const opts: any = {
+        cf,
+        outputFormat: outputMode,
+        binaryFormat,
+        swapEndian: bigEndian,
+        dith: dither,
+        outName: 'converted',
+      };
+      if (q.maxSize) {
+        const [mw, mh] = q.maxSize.toLowerCase().split('x').map(n => parseInt(n, 10));
+        if (!isNaN(mw) && !isNaN(mh)) {
+          opts.overrideWidth = mw;
+          opts.overrideHeight = mh;
         }
-      );
+      }
+      const result = await convertImageBlob(inputData, opts);
 
       if (outputMode === OutputMode.BIN) {
         res.setHeader('Content-Type', 'application/octet-stream');

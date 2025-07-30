@@ -69,6 +69,19 @@ docker run -it --rm \
 
 `lv_img_conv.js` is in the `$PATH` and callable from the interactive shell.
 
+### API:
+```bash
+curl -X POST http://localhost:3000/convert \
+  -F "url=https://www.nhc.noaa.gov/xgtwo/two_atl_7d0.png" \
+  -F "cf=CF_RGB565A8" \
+  -F "output=c_array" \
+  -F "dither=true" \
+  -F "bigEndian=false" \
+  -F "maxSize=800x480" \
+  --output converted.c
+```
+
+
 ### Parameters
 
 | Parameter | Function |

@@ -442,7 +442,7 @@ const lv_img_dsc_t ${out_name} = {
             const p = this.w * y + x + 1024;                              // +1024 for the palette
             this.d_out[p] = c & 0xFF;
         }
-	}
+    }
 
     dith_reset() {
         if(this.options.dith){
@@ -738,10 +738,18 @@ async function convertImageBlob(img: Image|Uint8Array, options: Partial<Converte
     const outputFormat: OutputMode = options.outputFormat;
     let c_creator: Converter;
     if(isImage(img, options)) {
-        const canvas = createCanvas(img.width, img.height);
-        const ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0);
-        const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+        // Resize image if override dimensions are provided
+        let w = img.width;
+        let h = img.height;
+        if (typeof options.overrideWidth === 'number' && typeof options.overrideHeight === 'number') {
+            const scale = Math.min(options.overrideWidth / img.width, options.overrideHeight / img.height, 1);
+            w = Math.floor(img.width * scale);
+            h = Math.floor(img.height * scale);
+        }
+        const canvas = createCanvas(w, h);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const imageData = ctx.getImageData(0, 0, w, h).data;
     
         const alpha = (options.cf == ImageMode.CF_TRUE_COLOR_ALPHA
             || options.cf == ImageMode.CF_ALPHA_1_BIT
@@ -749,7 +757,7 @@ async function convertImageBlob(img: Image|Uint8Array, options: Partial<Converte
             || options.cf == ImageMode.CF_ALPHA_4_BIT
             || options.cf == ImageMode.CF_ALPHA_8_BIT
             || options.cf == ImageMode.CF_RGB565A8);
-        c_creator = new Converter(img.width, img.height, imageData, alpha, options);
+        c_creator = new Converter(w, h, imageData, alpha, options);
         
         if(options.outputFormat == OutputMode.C) {
             if(options.cf == ImageMode.CF_TRUE_COLOR || options.cf == ImageMode.CF_TRUE_COLOR_ALPHA || options.cf == ImageMode.CF_TRUE_COLOR_CHROMA) {
