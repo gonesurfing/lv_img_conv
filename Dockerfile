@@ -9,12 +9,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 # Install JS dependencies and build native modules
 RUN npm install --build-from-source
-RUN npm rebuild canvas --build-from-source
 # Copy application source
 COPY . ./
 # Expose the Cloud Run default port
 EXPOSE 8080
 # At runtime, start the API
 CMD ["npm", "run", "start"]
+
 
 

@@ -13,7 +13,7 @@
     "lib/"
   ],
   "scripts": {
-    "start": "parcel ./web/index.html --open",
+    "start": "parcel ./web/index.html --port 8080",
     "test": "jest --verbose",
     "build": "parcel build ./web/index.html ./web/content.html --public-url ./"
   },
