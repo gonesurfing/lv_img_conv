@@ -2,18 +2,22 @@ import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import { convertImageBlob } from './lib/convert';
+import fetch from 'node-fetch';
 import { loadImage } from 'canvas';
 import { ImageMode, ImageModeUtil, OutputMode } from './lib/enums';
 
 const upload = multer();
 const app = express();
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-interface Query { 
-  cf: keyof typeof ImageMode; 
-  output: string; 
-  dither?: 'true'; 
-  bigEndian?: 'true'; 
+interface Query {
+  cf: keyof typeof ImageMode;
+  output: string;
+  dither?: 'true';
+  bigEndian?: 'true';
+  url?: string;
 }
 
 app.post(
@@ -21,8 +25,16 @@ app.post(
   upload.single('image'),
   async (req, res) => {
     try {
-      const fileBuf = req.file.buffer as Buffer;
       const q = req.body as Query;
+      let fileBuf: Buffer;
+      if (q.url) {
+        const response = await fetch(q.url);
+        if (!response.ok) throw new Error(`Failed to fetch image from URL: ${response.statusText}`);
+        const arrayBuf = await response.arrayBuffer();
+        fileBuf = Buffer.from(arrayBuf);
+      } else {
+        fileBuf = req.file.buffer as Buffer;
+      }
 
       // parse / validate your options
       const cf = ImageMode[q.cf];
