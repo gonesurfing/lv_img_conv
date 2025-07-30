@@ -30,7 +30,7 @@ import { Point } from '../../utils/point';
 import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/distanceCalculator';
 import { AbstractPaletteQuantizer } from '../paletteQuantizer';
-import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
+import type { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { ProgressTracker } from '../../utils';
 
 // bias for colour values

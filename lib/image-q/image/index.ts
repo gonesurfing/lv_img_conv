@@ -7,7 +7,7 @@
  */
 
 export { AbstractImageQuantizer } from './imageQuantizer';
-export { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
+export type { ImageQuantizerYieldValue } from './imageQuantizerYieldValue';
 export { NearestColor } from './nearestColor';
 export { ErrorDiffusionArray, ErrorDiffusionArrayKernel } from './array';
 export { ErrorDiffusionRiemersma } from './riemersma';

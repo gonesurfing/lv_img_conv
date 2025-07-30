@@ -9,6 +9,11 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "jsx": "react-jsx"
-    }
+        "jsx": "react-jsx",
+        // emit compiled .js files into dist instead of alongside .ts
+        "outDir": "dist",
+        "rootDir": "."
+    },
+    // don’t pollute src or lib with build artifacts
+    "exclude": ["node_modules", "dist"]
 }

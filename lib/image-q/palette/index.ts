@@ -11,4 +11,4 @@ export { NeuQuantFloat } from './neuquant/neuquantFloat';
 export { RGBQuant } from './rgbquant/rgbquant';
 export { ColorHistogram } from './rgbquant/colorHistogram';
 export { WuQuant, WuColorCube } from './wu/wuQuant';
-export { PaletteQuantizerYieldValue } from './paletteQuantizerYieldValue';
+export type { PaletteQuantizerYieldValue } from './paletteQuantizerYieldValue';

@@ -19,7 +19,7 @@ import { PointContainer } from '../../utils/pointContainer';
 import { AbstractDistanceCalculator } from '../../distance/distanceCalculator';
 import { ColorHistogram } from './colorHistogram';
 import { AbstractPaletteQuantizer } from '../paletteQuantizer';
-import { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
+import type { PaletteQuantizerYieldValue } from '../paletteQuantizerYieldValue';
 import { stableSort } from '../../utils/arithmetic';
 import { ProgressTracker } from '../../utils';
 

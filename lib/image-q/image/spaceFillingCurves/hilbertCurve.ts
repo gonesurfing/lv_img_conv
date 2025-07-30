@@ -1,5 +1,5 @@
 import { ProgressTracker } from '../../utils/progressTracker';
-import { ImageQuantizerYieldValue } from '../imageQuantizerYieldValue';
+import type { ImageQuantizerYieldValue } from '../imageQuantizerYieldValue';
 
 enum Direction {
   NONE = 0,
