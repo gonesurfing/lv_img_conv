@@ -10,11 +10,12 @@ COPY package*.json ./
 # Install JS dependencies and build native modules
 RUN npm install --build-from-source
 # Copy application source
-COPY . ./
-# Expose the Cloud Run default port
+COPY . .
+# Expose and default the API port
 EXPOSE 8080
+ENV PORT=8080
 # At runtime, start the API
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:api"]
 
 
 
